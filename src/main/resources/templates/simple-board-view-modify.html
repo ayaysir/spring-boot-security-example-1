@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>modify</title>
+<link rel="stylesheet" type="text/css" href="/board.css">
+</head>
+<body>
+	<hr>
+	<div sec:authorize="isAuthenticated()">
+		<p>current username: <span class="text-red" th:text="${#authentication.getPrincipal().getUsername()}">anon</span></p>
+		<p>articleId: <span th:text="${article.seq}"></span></p>
+		<hr>
+		<div>
+			<form method="post" th:action="@{/board/proc/update}">
+				<input type="hidden" th:value="${article.seq}" name="articleId">
+				<input type="text" placeholder="title..." name="title" th:value="${article.title}">
+				<textarea placeholder="content..." name="content" th:text="${article.content}"></textarea>
+				<button>submit</button>
+			</form>
+		</div>
+	</div>
+	
+
+</body>
+</html>

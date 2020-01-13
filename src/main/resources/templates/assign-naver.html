@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>naver</title>
+<style>
+	pre{
+		overflow: scroll;
+	}
+</style>
+<!-- <meta http-equiv="refresh" content="5;url=/naver"> -->
+</head>
+<body>
+	<th:block sec:authorize="isAuthenticated()">
+		<!-- <p th:text="${uniqueIdOfNaver}"></p> -->
+		<div th:if="${uniqueIdOfNaver ne null}">
+			<h5>현재 아이디를 네이버 아이디와 연동하시겠습니까?</h5>
+			<a>[NO]</a> 
+			<form th:action="@{/oauth/assign/naver}" method="POST">
+				<input type="hidden" th:value="${uniqueIdOfNaver}" name="uniqueId">
+				<button>[YES]</button>
+			</form>
+		</div>
+	</th:block>
+</body>
+</html>

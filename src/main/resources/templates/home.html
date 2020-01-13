@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>Select Menu</title>
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.css}">
+<style>
+.food {
+	color: red;
+}
+</style>
+</head>
+<body>
+	<div class="nav" th:replace="fragments/semantic :: nav"></div>
+	<a href="test">Test Page</a>
+	<a sec:authorize="hasRole('ADMIN')" href="adminOnly">adminOnly Page</a>
+	<a sec:authorize="!isAuthenticated()" href="login">Login</a>
+	<a sec:authorize="isAuthenticated()" href="logout">Logout</a>
+	<a sec:authorize="isAuthenticated()" href="board">SimpleBoard</a>
+	<p sec:authorize="hasRole('ADMIN')">[이 부분은 운영자(ADMIN)에게만 나타남]</p>
+	<p sec:authorize="hasRole('GUEST')">[이 부분은 손님(GUEST)에게만 나타남]</p>
+	<p sec:authorize="isAuthenticated()">[이 부분은 로그인한
+		사용자(isAuthenticated) 모두에게 나타남]
+	<p>
+	<p sec:authorize="isAuthenticated()">
+		내가 좋아하는 음식은 <span th:text="${food}" class="food"></span> 입니다.
+	</p>
+	<p class="to-replace" th:text="${#authentication.getPrincipal()}"></p>
+	
+		
+	<div class="row" th:if="${naverApiURL ne null}">
+		<div class="col-12">
+		  <h3>현재 계정을 네이버와 연동하시겠습니까? 이 부분은 연동이 되지 않았을 때에만 나타납니다.</h3>
+          <a th:href="${naverApiURL}"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG" /></a>
+		</div>
+	</div>
+	
+	<div class="footer" th:replace="fragments/semantic :: footer"></div>
+	<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+
+	
+	<script>
+		/* var testMsg = $(".navbar-brand").text()
+		$(".to-replace").text("JQUERY TEST: " + testMsg) */
+	</script>
+</body>
+</html>

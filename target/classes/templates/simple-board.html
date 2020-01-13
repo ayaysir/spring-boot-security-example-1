@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>초간단 게시판</title>
+<link rel="stylesheet" type="text/css" href="/board.css">
+</head>
+<body>
+	<hr>
+	<div sec:authorize="isAuthenticated()">
+		<p>current username: <span class="text-red" th:text="${#authentication.getPrincipal().getUsername()}">anon</span></p>
+		<a href="logout">Logout</a>
+		<hr>
+		<div>
+			<form method="post" th:action="@{/board/proc/write}">
+				<input type="text" placeholder="title..." name="title">
+				<textarea placeholder="content..." name="content"></textarea>
+				<button>submit</button>
+			</form>
+		</div>
+	</div>
+	<div sec:authorize="!isAuthenticated()">
+		<a href="/login">Login</a>
+	</div>
+	<hr>
+	<table>
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th>username</th>
+				<th>title</th>
+				<th>date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="article, i: ${list}">
+				<td th:text="${article.seq}"></td>
+				<td th:text="${article.username}"></td>
+				<td sec:authorize="isAuthenticated()">
+					<a th:href="${'/board/read/' + article.seq}" th:text="${article.title}"></a>
+					<span class="text-blue" th:if="${i.count eq i.size}">[1등]</span>
+				</td>
+				<td sec:authorize="!isAuthenticated()" th:text="${article.title}"></td>
+				<td th:text="${article.writeDate}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+</html>

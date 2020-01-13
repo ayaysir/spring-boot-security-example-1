@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>delete</title>
+<link rel="stylesheet" type="text/css" href="/board.css">
+</head>
+<body>
+	<hr>
+	<div sec:authorize="isAuthenticated()">
+		<p>current username: <span class="text-red" th:text="${#authentication.getPrincipal().getUsername()}">anon</span></p>
+		<p>articleId: <span th:text="${articleId}"></span></p>
+		<hr>
+		<h4>이 글을 정말 삭제하시겠습니까?</h4>
+		<form th:action="@{/board/proc/delete}" method="POST">
+			<input type="hidden" name="articleId" th:value="${articleId}">
+			<p><a th:href="${'/board/read/' + articleId}">NO</a> <button>[YES]</button></p>
+		</form>
+		
+		
+	</div>
+
+</body>
+</html>

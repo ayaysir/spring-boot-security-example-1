@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>Callback</title>
+<style>
+	pre{
+		overflow: scroll;
+	}
+</style>
+<!-- <meta http-equiv="refresh" content="5;url=/naver"> -->
+</head>
+<body>
+	<h1>콜백 페이지</h1>
+	<pre th:text="${res}"></pre>
+	<p>5초 후에 메인 페이지로 돌아갑니다. 원래는 이 화면이 사용자에게 보이지 않고 바로 리다이렉트 되어야 합니다.</p>
+	<a href="/naver">go to naver test page</a>
+	<a href="/">go to main page</a>
+	
+	<th:block sec:authorize="isAuthenticated()">
+		<p th:text="${isConnectedToNaver}"></p>
+		<div th:unless="${isConnectedToNaver}">
+			<h5>현재 아이디를 네이버 아이디와 연동하시겠습니까?</h5>
+			<a>[NO]</a> 
+			<form th:action="@{/oauth/assign/naver}" method="POST">
+				<input type="hidden" th:value="${uniqueIdOfNaver}" name="uniqueId">
+				<button>[YES]</button>
+			</form>
+		</div>
+		<div th:if="${isConnectedToNaver}">
+			<h5>현재 아이디 연동이 되어 있습니다.</h5>
+		</div>
+	</th:block>
+</body>
+</html>

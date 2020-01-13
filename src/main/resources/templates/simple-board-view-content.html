@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>게시글 보기</title>
+<link rel="stylesheet" type="text/css" href="/board.css">
+</head>
+<body>
+	<hr>
+	<div sec:authorize="isAuthenticated()">
+		<p>current username: <span class="text-red" th:text="${#authentication.getPrincipal().getUsername()}">anon</span></p>
+		<a href="/logout">Logout</a>
+		
+	</div>
+	<div sec:authorize="!isAuthenticated()">
+		<a href="/login">Login</a>
+	</div>
+	
+	<hr>
+	<h3 th:text="${article.title}">title</h3>
+	<p>by <span th:text="${article.username}">anon</span> <span class="text-grey" th:text="${'[' + article.writeDate + ']'}">date</span></p>
+
+	<h5>content </h5>
+	<pre th:text="${article.content}">....</pre>
+	<p th:if="${#authentication.getPrincipal().getUsername() eq article.username}">
+		<a th:href="${'/board/update/' + article.seq}">[modify]</a>
+		<a th:href="${'/board/delete/' + article.seq}">[delete]</a>
+	</p>
+	<p><a href="/board">[Back to list]</a></p>
+	
+
+</body>
+</html>

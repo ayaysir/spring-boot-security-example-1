@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <title>Please Login</title>
+</head>
+
+<body>
+    <div th:fragment="content">
+    
+        <div th:if="${isTodoAssignNaver}">
+        	<h3>네이버 연동이 되지 않았습니다. 로그인하면 네이버와 연동하는 메뉴가 나오고, 회원가입을 누르고 완료하면 연동 메뉴가 나타납니다.</h3>
+        </div>
+        <form name="f" th:action="@{/login}" method="post">
+            <fieldset>
+                <legend>Please Login</legend>
+                <div th:if="${param.error}" class="alert alert-error">
+                    Invalid username and password.
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success">
+                    You have been logged out.
+                </div>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" />
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" />
+                <div class="form-actions">
+                    <button type="submit" class="btn">Log in</button>
+                </div>
+                
+                
+            	<p>
+            		<a th:href="@{/signup}" th:unless="${isTodoAssignNaver}">회원가입</a>
+            		<a th:href="@{/signup?isTodoAssignNaver=true}" th:if="${isTodoAssignNaver}">회원가입 (isTodoAssignNaver)</a>
+            	</p>
+                
+                <div th:unless="${isTodoAssignNaver}">
+                    <h3>네이버 로그인</h3>
+                    <a th:href="${naverApiURL}"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG" /></a>
+                </div>
+                
+                <input type="hidden" th:value="${isTodoAssignNaver ne null and isTodoAssignNaver ? 'naver' : 'none'}" name="oauth-handler">
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>
